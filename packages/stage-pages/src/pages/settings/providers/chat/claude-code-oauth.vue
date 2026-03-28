@@ -15,7 +15,7 @@ import { useConsciousnessStore } from '@proj-airi/stage-ui/stores/modules/consci
 import { useProvidersStore } from '@proj-airi/stage-ui/stores/providers'
 import { Callout, FieldKeyValues } from '@proj-airi/ui'
 import { storeToRefs } from 'pinia'
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const providerId = 'claude-code-oauth'
 const providersStore = useProvidersStore()
@@ -87,6 +87,13 @@ watch(headers, (h) => {
     return acc
   }, {} as Record<string, string>)
 }, { deep: true, immediate: true })
+
+onMounted(() => {
+  if (!providers.value[providerId]?.headers)
+    providers.value[providerId] = { ...providers.value[providerId], headers: {} }
+  if (headers.value.length === 0)
+    headers.value = [{ key: '', value: '' }]
+})
 
 function goToModelSelection() {
   activeProvider.value = providerId
