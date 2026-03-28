@@ -770,6 +770,12 @@ pages:
       openai-compatible:
         description: Совместимый с OpenAI
         title: OpenAI Compatible
+      codex-oauth:
+        description: Экспериментальный provider на OAuth access token для подписочного доступа к Codex / OpenAI.
+        title: Codex OAuth
+      claude-code-oauth:
+        description: Экспериментальный provider на OAuth access token для подписочного доступа к Claude Code.
+        title: Claude Code OAuth
       nvidia:
         description: Build.nvidia.com
         title: NVIDIA NIM

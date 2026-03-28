@@ -770,6 +770,12 @@ pages:
       openai-compatible:
         description: OpenAI互換
         title: OpenAI互換
+      codex-oauth:
+        description: サブスクリプション経由の Codex / OpenAI アクセス向け実験的 OAuth トークン provider。
+        title: Codex OAuth
+      claude-code-oauth:
+        description: Claude Code サブスクリプション向け実験的 OAuth トークン provider。
+        title: Claude Code OAuth
       nvidia:
         description: build.nvidia.com
         title: NVIDIA NIM

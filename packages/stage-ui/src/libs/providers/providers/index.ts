@@ -8,6 +8,7 @@ import './openrouter-ai'
 import './nvidia'
 import './groq'
 import './anthropic'
+import './claude-code-oauth'
 import './google-generative-ai'
 import './deepseek'
 import './302-ai'
@@ -28,6 +29,7 @@ import './ollama'
 import './cloudflare-workers-ai'
 import './azure-ai-foundry'
 import './official'
+import './codex-oauth'
 
 export {
   getDefinedProvider,

@@ -770,6 +770,12 @@ pages:
       openai-compatible:
         description: Tương thích OpenAI
         title: Tương thích OpenAI
+      codex-oauth:
+        description: Provider thử nghiệm dùng OAuth access token cho truy cập Codex / OpenAI theo gói thuê bao.
+        title: Codex OAuth
+      claude-code-oauth:
+        description: Provider thử nghiệm dùng OAuth access token cho truy cập Claude Code theo gói thuê bao.
+        title: Claude Code OAuth
       nvidia:
         description: build.nvidia.com
         title: NVIDIA NIM

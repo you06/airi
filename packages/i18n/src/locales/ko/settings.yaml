@@ -770,6 +770,12 @@ pages:
       openai-compatible:
         description: OpenAI 호환
         title: OpenAI 호환
+      codex-oauth:
+        description: 구독형 Codex / OpenAI 접근을 위한 실험적 OAuth access token provider입니다.
+        title: Codex OAuth
+      claude-code-oauth:
+        description: Claude Code 구독 접근을 위한 실험적 OAuth access token provider입니다.
+        title: Claude Code OAuth
       nvidia:
         description: build.nvidia.com
         title: NVIDIA NIM

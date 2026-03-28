@@ -801,6 +801,12 @@ pages:
       openai-compatible:
         description: OpenAI Compatible
         title: OpenAI Compatible
+      codex-oauth:
+        description: Experimental OAuth-token provider for subscription-backed Codex / OpenAI access.
+        title: Codex OAuth
+      claude-code-oauth:
+        description: Experimental OAuth-token provider for Claude Code subscription access.
+        title: Claude Code OAuth
       nvidia:
         description: build.nvidia.com
         title: NVIDIA NIM

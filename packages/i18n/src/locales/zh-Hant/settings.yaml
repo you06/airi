@@ -770,6 +770,12 @@ pages:
       openai-compatible:
         description: OpenAI 相容
         title: OpenAI 兼容性
+      codex-oauth:
+        description: 基於 OAuth access token 的實驗性 Codex / OpenAI 訂閱 provider。
+        title: Codex OAuth
+      claude-code-oauth:
+        description: 基於 OAuth access token 的實驗性 Claude Code 訂閱 provider。
+        title: Claude Code OAuth
       nvidia:
         description: build.nvidia.com
         title: NVIDIA NIM

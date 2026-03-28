@@ -770,6 +770,12 @@ pages:
       openai-compatible:
         description: Compatible avec OpenAI
         title: Compatible avec OpenAI
+      codex-oauth:
+        description: Fournisseur expérimental par jeton OAuth pour l'accès Codex / OpenAI via abonnement.
+        title: Codex OAuth
+      claude-code-oauth:
+        description: Fournisseur expérimental par jeton OAuth pour l'accès à Claude Code via abonnement.
+        title: Claude Code OAuth
       nvidia:
         description: build.nvidia.com
         title: NVIDIA NIM
