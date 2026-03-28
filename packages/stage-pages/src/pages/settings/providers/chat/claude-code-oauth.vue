@@ -13,9 +13,9 @@ import {
 import { useProviderValidation } from '@proj-airi/stage-ui/composables/use-provider-validation'
 import { useConsciousnessStore } from '@proj-airi/stage-ui/stores/modules/consciousness'
 import { useProvidersStore } from '@proj-airi/stage-ui/stores/providers'
-import { Callout } from '@proj-airi/ui'
+import { Callout, FieldKeyValues } from '@proj-airi/ui'
 import { storeToRefs } from 'pinia'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const providerId = 'claude-code-oauth'
 const providersStore = useProvidersStore()
@@ -33,7 +33,7 @@ const apiKey = computed({
 })
 
 const baseUrl = computed({
-  get: () => providers.value[providerId]?.baseUrl || '',
+  get: () => providers.value[providerId]?.baseUrl || 'https://api.anthropic.com/v1/',
   set: (value) => {
     if (!providers.value[providerId])
       providers.value[providerId] = {}
@@ -57,6 +57,37 @@ const {
   runManualTest,
 } = useProviderValidation(providerId)
 
+const headers = ref<{ key: string, value: string }[]>(Object.entries(providers.value[providerId]?.headers || {}).map(([key, value]) => ({ key, value } as { key: string, value: string })) || [{ key: '', value: '' }])
+
+function addKeyValue(items: { key: string, value: string }[], key: string, value: string) {
+  if (!items)
+    return
+  items.push({ key, value })
+}
+
+function removeKeyValue(index: number, items: { key: string, value: string }[]) {
+  if (!items)
+    return
+  if (items.length === 1) {
+    items[0].key = ''
+    items[0].value = ''
+  }
+  else {
+    items.splice(index, 1)
+  }
+}
+
+watch(headers, (h) => {
+  if (h.length > 0 && (h.at(-1)!.key !== '' || h.at(-1)!.value !== ''))
+    h.push({ key: '', value: '' })
+  if (!providers.value[providerId])
+    return
+  providers.value[providerId].headers = h.filter(header => header.key !== '').reduce((acc, header) => {
+    acc[header.key] = header.value
+    return acc
+  }, {} as Record<string, string>)
+}, { deep: true, immediate: true })
+
 function goToModelSelection() {
   activeProvider.value = providerId
   router.push('/settings/modules/consciousness')
@@ -71,7 +102,7 @@ function goToModelSelection() {
     :on-back="() => router.back()"
   >
     <ProviderSettingsContainer>
-      <Callout theme="warning">
+      <Callout theme="orange">
         <template #label>
           {{ t('settings.pages.providers.provider.claude-code-oauth.title') }}
         </template>
@@ -99,6 +130,16 @@ function goToModelSelection() {
         <ProviderBaseUrlInput
           v-model="baseUrl"
           placeholder="https://api.anthropic.com/v1/"
+        />
+
+        <FieldKeyValues
+          v-model="headers"
+          :label="t('settings.pages.providers.common.section.advanced.fields.field.headers.label')"
+          :description="t('settings.pages.providers.common.section.advanced.fields.field.headers.description')"
+          :key-placeholder="t('settings.pages.providers.common.section.advanced.fields.field.headers.key.placeholder')"
+          :value-placeholder="t('settings.pages.providers.common.section.advanced.fields.field.headers.value.placeholder')"
+          @add="(key: string, value: string) => addKeyValue(headers, key, value)"
+          @remove="(index: number) => removeKeyValue(index, headers)"
         />
       </ProviderAdvancedSettings>
 
