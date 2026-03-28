@@ -6,13 +6,15 @@ import { z } from 'zod'
 import { defineProvider } from '../registry'
 import { createBearerAuthFetch } from '../shared/subscription-oauth'
 
+const DEFAULT_CLAUDE_CODE_OAUTH_BASE_URL = 'https://api.anthropic.com/v1/'
+
 const claudeCodeOAuthConfigSchema = z.object({
   apiKey: z
     .string('OAuth Access Token'),
   baseUrl: z
     .string('Base URL')
     .optional()
-    .default('https://api.anthropic.com/v1/'),
+    .default(DEFAULT_CLAUDE_CODE_OAUTH_BASE_URL),
   headers: z
     .record(z.string(), z.string())
     .optional(),
@@ -73,7 +75,7 @@ export const providerClaudeCodeOAuth = defineProvider<ClaudeCodeOAuthConfig>({
     }),
   }),
   createProvider(config) {
-    return createClaudeCodeOAuthProvider(config.apiKey, config.baseUrl, config.headers)
+    return createClaudeCodeOAuthProvider(config.apiKey, config.baseUrl || DEFAULT_CLAUDE_CODE_OAUTH_BASE_URL, config.headers)
   },
   extraMethods: {
     listModels: async () => ([

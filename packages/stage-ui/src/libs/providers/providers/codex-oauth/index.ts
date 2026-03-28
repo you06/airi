@@ -5,13 +5,15 @@ import { createOpenAICompatibleValidators } from '../../validators/openai-compat
 import { defineProvider } from '../registry'
 import { createBearerAuthFetch, overrideProviderFetch } from '../shared/subscription-oauth'
 
+const DEFAULT_CODEX_OAUTH_BASE_URL = 'https://api.openai.com/v1'
+
 const codexOAuthConfigSchema = z.object({
   apiKey: z
     .string('OAuth Access Token'),
   baseUrl: z
     .string('Base URL')
     .optional()
-    .default('https://api.openai.com/v1'),
+    .default(DEFAULT_CODEX_OAUTH_BASE_URL),
   headers: z
     .record(z.string(), z.string())
     .optional(),
@@ -49,7 +51,7 @@ export const providerCodexOAuth = defineProvider<CodexOAuthConfig>({
     }),
   }),
   createProvider(config) {
-    const provider = createOpenAI('', config.baseUrl) as any
+    const provider = createOpenAI('', config.baseUrl || DEFAULT_CODEX_OAUTH_BASE_URL) as any
     const fetch = createBearerAuthFetch(config.apiKey, config.headers)
     return overrideProviderFetch(provider, fetch)
   },
