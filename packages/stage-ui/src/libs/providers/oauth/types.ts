@@ -38,12 +38,12 @@ export interface OAuthTokenResponse {
   scope?: string
 }
 
-export type OAuthFlowStatus =
-  | { state: 'idle' }
-  | { state: 'awaiting-callback', authorizeUrl: string }
-  | { state: 'exchanging-code' }
-  | { state: 'authenticated', tokens: OAuthTokens }
-  | { state: 'error', error: string }
+export type OAuthFlowStatus
+  = | { state: 'idle' }
+    | { state: 'awaiting-callback', authorizeUrl: string }
+    | { state: 'exchanging-code' }
+    | { state: 'authenticated', tokens: OAuthTokens }
+    | { state: 'error', error: string }
 
 export interface OAuthStorageEntry {
   providerId: string
