@@ -25,6 +25,7 @@ type ClaudeCodeOAuthConfig = z.input<typeof claudeCodeOAuthConfigSchema>
 function createClaudeCodeOAuthProvider(accessToken: string, baseURL: string, headers?: Record<string, string>) {
   const providerFetch = createBearerAuthFetch(accessToken, {
     'anthropic-dangerous-direct-browser-access': 'true',
+    'anthropic-beta': 'oauth-2025-04-20',
     ...headers,
   }, {
     removeHeaders: ['x-api-key'],
@@ -57,9 +58,9 @@ export const providerClaudeCodeOAuth = defineProvider<ClaudeCodeOAuthConfig>({
 
   createProviderConfig: ({ t }) => claudeCodeOAuthConfigSchema.extend({
     apiKey: claudeCodeOAuthConfigSchema.shape.apiKey.meta({
-      labelLocalized: 'OAuth Access Token',
-      descriptionLocalized: 'Paste an OAuth access token obtained outside AIRI. AIRI does not manage the Claude Code login or token refresh flow yet.',
-      placeholderLocalized: 'Paste your Claude Code OAuth access token',
+      labelLocalized: 'Setup Token',
+      descriptionLocalized: 'Run `claude setup-token` in your terminal, then paste the resulting token here. The token will expire — re-run the command to get a new one.',
+      placeholderLocalized: 'sk-ant-oat01-...',
       type: 'password',
     }),
     baseUrl: claudeCodeOAuthConfigSchema.shape.baseUrl.meta({
@@ -89,13 +90,25 @@ export const providerClaudeCodeOAuth = defineProvider<ClaudeCodeOAuthConfig>({
         id: 'claude-sonnet-4-5-20250929',
         name: 'Claude Sonnet 4.5',
         provider: 'claude-code-oauth',
+        description: 'Anthropic balanced model for coding and analysis',
+      },
+      {
+        id: 'claude-sonnet-4-6-20260320',
+        name: 'Claude Sonnet 4.6',
+        provider: 'claude-code-oauth',
+        description: 'Latest Sonnet with improved performance',
+      },
+      {
+        id: 'claude-opus-4-5-20250929',
+        name: 'Claude Opus 4.5',
+        provider: 'claude-code-oauth',
         description: 'Anthropic smartest model for complex agents and coding',
       },
       {
-        id: 'claude-opus-4-1-20250805',
-        name: 'Claude Opus 4.1',
+        id: 'claude-opus-4-6-20260320',
+        name: 'Claude Opus 4.6',
         provider: 'claude-code-oauth',
-        description: 'Exceptional model for specialized reasoning tasks',
+        description: 'Latest and most capable Claude model',
       },
     ] satisfies ModelInfo[]),
   },
@@ -113,8 +126,15 @@ export const providerClaudeCodeOAuth = defineProvider<ClaudeCodeOAuthConfig>({
           const accessToken = typeof config.apiKey === 'string' ? config.apiKey.trim() : ''
           const baseUrl = typeof config.baseUrl === 'string' ? config.baseUrl.trim() : ''
 
-          if (!accessToken)
-            errors.push({ error: new Error('OAuth access token is required.') })
+          if (!accessToken) {
+            errors.push({ error: new Error('OAuth access token is required. Run `claude setup-token` in your terminal to generate one.') })
+          }
+          else if (!accessToken.startsWith('sk-ant-oat')) {
+            errors.push({ error: new Error('Token does not look like a Claude setup-token (expected prefix: sk-ant-oat). Run `claude setup-token` to generate a valid token.') })
+          }
+          else if (accessToken.length < 80) {
+            errors.push({ error: new Error('Token appears too short. Please paste the full token from `claude setup-token`.') })
+          }
 
           if (!baseUrl) {
             errors.push({ error: new Error('Base URL is required.') })

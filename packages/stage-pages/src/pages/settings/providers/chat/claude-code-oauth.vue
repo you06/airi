@@ -114,9 +114,9 @@ function goToModelSelection() {
           {{ t('settings.pages.providers.provider.claude-code-oauth.title') }}
         </template>
         <p>
-          This is an experimental provider that uses an OAuth access token from a Claude Code CLI session.
-          Paste the token obtained from an external OAuth flow (e.g. CLIProxyAPI or Claude Code CLI).
-          Token refresh is not yet managed by AIRI.
+          Use your Claude Pro/Max subscription with AIRI. Run <code>claude setup-token</code> in your
+          terminal to generate a token, then paste it below. The token will expire periodically —
+          re-run the command to get a new one.
         </p>
       </Callout>
 
@@ -128,8 +128,8 @@ function goToModelSelection() {
         <ProviderApiKeyInput
           v-model="apiKey"
           :provider-name="providerMetadata?.localizedName"
-          label="OAuth Access Token"
-          placeholder="Paste your Claude Code OAuth access token"
+          label="Setup Token"
+          placeholder="sk-ant-oat01-..."
         />
       </ProviderBasicSettings>
 
