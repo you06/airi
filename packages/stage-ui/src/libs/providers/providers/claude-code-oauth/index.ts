@@ -10,7 +10,7 @@ const DEFAULT_CLAUDE_CODE_OAUTH_BASE_URL = 'https://api.anthropic.com/v1/'
 
 const claudeCodeOAuthConfigSchema = z.object({
   apiKey: z
-    .string('OAuth Access Token'),
+    .string('Setup Token'),
   baseUrl: z
     .string('Base URL')
     .optional()
@@ -129,8 +129,8 @@ export const providerClaudeCodeOAuth = defineProvider<ClaudeCodeOAuthConfig>({
           if (!accessToken) {
             errors.push({ error: new Error('OAuth access token is required. Run `claude setup-token` in your terminal to generate one.') })
           }
-          else if (!accessToken.startsWith('sk-ant-oat')) {
-            errors.push({ error: new Error('Token does not look like a Claude setup-token (expected prefix: sk-ant-oat). Run `claude setup-token` to generate a valid token.') })
+          else if (!accessToken.startsWith('sk-ant-oat01-')) {
+            errors.push({ error: new Error('Token does not look like a Claude setup-token (expected prefix: sk-ant-oat01-). Run `claude setup-token` to generate a valid token.') })
           }
           else if (accessToken.length < 80) {
             errors.push({ error: new Error('Token appears too short. Please paste the full token from `claude setup-token`.') })
